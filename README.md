@@ -3,7 +3,7 @@
 Bing Maps Layer for Leaflet v1.0.0
 
 
-### L.BingLayer(options|BingMapsKey)
+### L.TileLayer.Bing(options|BingMapsKey)
 
 Create a new Bing Maps Layer. Depends on [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which needs a polyfill for [older browsers](http://caniuse.com/#feat=promises) by adding this script to your html `<head>`:
 
@@ -25,7 +25,7 @@ Create a new Bing Maps Layer. Depends on [Promises](https://developer.mozilla.or
 
 ```js
 var map = L.map('map').setView([51.505, -0.09], 13)
-L.bingLayer(MyBingMapsKey).addTo(map)
+L.TileLayer.bing(MyBingMapsKey).addTo(map)
 ```
 
 [Live Example](http://gmaclennan.github.io/leaflet-bing-layer/) see [index.html](index.html)

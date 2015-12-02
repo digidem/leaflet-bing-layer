@@ -68,9 +68,9 @@
    * Create a basic map
    * @example
    * var map = L.map('map').setView([51.505, -0.09], 13)
-   * L.bingLayer(MyBingMapsKey).addTo(map)
+   * L.TileLayer.Bing(MyBingMapsKey).addTo(map)
    */
-  L.BingLayer = L.TileLayer.extend({
+  L.TileLayer.Bing = L.TileLayer.extend({
     options: {
       BingMapsKey: null, // Required
       imagerySet: 'Aerial',
@@ -92,7 +92,7 @@
       options = L.setOptions(this, options)
       options.minZoom = Math.max(1, options.minZoom)
 
-      var metaDataUrl = L.Util.template(L.BingLayer.METADATA_URL, {
+      var metaDataUrl = L.Util.template(L.TileLayer.Bing.METADATA_URL, {
         BingMapsKey: this.options.BingMapsKey,
         imagerySet: this.options.imagerySet
       })
@@ -225,8 +225,8 @@
     }
   })
 
-  L.bingLayer = function (options) {
-    return new L.BingLayer(options)
+  L.TileLayer.bing = function (options) {
+    return new L.TileLayer.Bing(options)
   }
 
   return L
