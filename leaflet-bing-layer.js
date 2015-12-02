@@ -62,7 +62,8 @@
     options: {
       BingMapsKey: null, // Required
       imagerySet: 'Aerial',
-      culture: 'en-US'
+      culture: 'en-US',
+      minZoom: 1
     },
 
     statics: {
@@ -77,6 +78,7 @@
         throw new Error('Must supply options.BingMapsKey')
       }
       options = L.setOptions(this, options)
+      options.minZoom = Math.max(1, options.minZoom)
 
       var metaDataUrl = L.Util.template(L.BingLayer.METADATA_URL, {
         BingMapsKey: this.options.BingMapsKey,
