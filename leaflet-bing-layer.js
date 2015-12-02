@@ -98,7 +98,10 @@
       } else {
         this._fetch.then(function () {
           tile.src = this.getTileUrl(coords)
-        }.bind(this))
+        }.bind(this)).catch(function (e) {
+          console.error('Bing Imagery Metadata error: %s', JSON.stringify(e))
+          done(e)
+        })
       }
 
       return tile
@@ -114,6 +117,9 @@
     },
 
     _metaDataOnLoad: function (metaData) {
+      if (metaData.statusCode !== 200) {
+        throw metaData
+      }
       this._url = metaData.resourceSets[0].resources[0].imageUrl
       this.options.subdomains = metaData.resourceSets[0].resources[0].imageUrlSubdomains
       return Promise.resolve()
