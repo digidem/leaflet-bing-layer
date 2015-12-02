@@ -157,7 +157,9 @@
     onAdd: function (map) {
       map.on('moveend', this._updateAttribution, this)
       L.TileLayer.prototype.onAdd.call(this, map)
-      this._updateAttribution()
+      this._attributions.forEach(function (attribution) {
+        map.attributionControl.addAttribution(attribution)
+      })
     },
 
     // Clean up events and remove attributions from attribution control
