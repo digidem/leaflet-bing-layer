@@ -170,14 +170,13 @@
     },
 
     _getAttributions: function (bbox, zoom) {
-      return this._imageryProviders.reduce(function (attribution, provider) {
-        var coverageAreas = provider.coverageAreas
-        for (var i = 0; i < coverageAreas.length; i++) {
-          if (bboxIntersect(bbox, coverageAreas[i].bbox) &&
-            zoom > coverageAreas[i].zoomMin &&
-            zoom < coverageAreas[i].zoomMax) {
-            attribution.push(provider.attribution)
-            return attribution
+      return this._imageryProviders.reduce(function (attributions, provider) {
+        for (var i = 0; i < provider.coverageAreas.length; i++) {
+          if (bboxIntersect(bbox, provider.coverageAreas[i].bbox) &&
+            zoom >= provider.coverageAreas[i].zoomMin &&
+            zoom <= provider.coverageAreas[i].zoomMax) {
+            attributions.push(provider.attribution)
+            return attributions
           }
         }
         return attribution
