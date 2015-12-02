@@ -145,6 +145,7 @@
       this._url = metaData.resourceSets[0].resources[0].imageUrl
       this._imageryProviders = metaData.resourceSets[0].resources[0].imageryProviders
       this.options.subdomains = metaData.resourceSets[0].resources[0].imageUrlSubdomains
+      this._updateAttribution()
       return Promise.resolve()
     },
 
