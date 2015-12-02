@@ -26,6 +26,15 @@
     return key
   }
 
+  function bboxIntersect (bbox1, bbox2){
+    return !(
+      bbox1[0] > bbox2[2] ||
+      bbox1[2] < bbox2[0] ||
+      bbox1[3] < bbox2[1] ||
+      bbox1[1] > bbox2[3]
+    )
+  }
+
   /**
    * Create a new Bing Maps layer.
    * @param {string|object} options Either a [Bing Maps Key](https://msdn.microsoft.com/en-us/library/ff428642.aspx) or an options object
@@ -47,7 +56,7 @@
     },
 
     statics: {
-      METADATA_URL: 'http://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={BingMapsKey}'
+      METADATA_URL: 'http://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={BingMapsKey}&include=ImageryProviders'
     },
 
     initialize: function (options) {
@@ -63,6 +72,9 @@
         BingMapsKey: this.options.BingMapsKey,
         imagerySet: this.options.imagerySet
       })
+
+      this._imageryProviders = []
+      this._attributions = []
 
       this._fetch = window.fetchJsonp(metaDataUrl, {jsonpCallback: 'jsonp'})
         .then(function (response) {
@@ -116,13 +128,59 @@
       })
     },
 
+    onAdd: function (map) {
+      map.on('moveend', this._updateAttribution, this)
+      L.TileLayer.prototype.onAdd.call(this, map)
+    },
+
+    onRemove: function (map) {
+      map.off('moveend', this._updateAttribution, this)
+      L.TileLayer.prototype.onRemove.call(this, map)
+    },
+
     _metaDataOnLoad: function (metaData) {
       if (metaData.statusCode !== 200) {
         throw new Error('Bing Imagery Metadata error: \n' + JSON.stringify(metaData, null, '  '))
       }
       this._url = metaData.resourceSets[0].resources[0].imageUrl
+      this._imageryProviders = metaData.resourceSets[0].resources[0].imageryProviders
       this.options.subdomains = metaData.resourceSets[0].resources[0].imageUrlSubdomains
       return Promise.resolve()
+    },
+
+    _updateAttribution: function () {
+      var map = this._map
+      if (!map || !map.attributionControl) return
+      var zoom = map.getZoom()
+      var bbox = map.getBounds().toBBoxString().split(',')
+      this._fetch.then(function () {
+        var attributions = this._getAttributions(bbox, zoom)
+        var prevAttributions = this._attributions
+        attributions.forEach(function (attr) {
+          if (prevAttributions.indexOf(attr) > -1) return
+          map.attributionControl.addAttribution(attr)
+        })
+        prevAttributions.filter(function (attr) {
+          if (attributions.indexOf(attr) > -1) return
+          map.attributionControl.removeAttribution(attr)
+        })
+        this._attributions = attributions
+      }.bind(this))
+    },
+
+    _getAttributions: function (bbox, zoom) {
+      return this._imageryProviders.reduce(function (attribution, provider) {
+        var coverageAreas = provider.coverageAreas
+        for (var i = 0; i < coverageAreas.length; i++) {
+          if (bboxIntersect(bbox, coverageAreas[i].bbox) &&
+            zoom > coverageAreas[i].zoomMin &&
+            zoom < coverageAreas[i].zoomMax) {
+            attribution.push(provider.attribution)
+            return attribution
+          }
+        }
+        return attribution
+      }, [])
     }
 
   })
