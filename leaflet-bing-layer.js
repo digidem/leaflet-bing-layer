@@ -163,7 +163,9 @@
     // Clean up events and remove attributions from attribution control
     onRemove: function (map) {
       map.off('moveend', this._updateAttribution, this)
-      this._attributions.forEach(map.attributionControl.removeAttribution)
+      this._attributions.forEach(function (attribution) {
+        map.attributionControl.removeAttribution(attribution)
+      })
       L.TileLayer.prototype.onRemove.call(this, map)
     },
 
