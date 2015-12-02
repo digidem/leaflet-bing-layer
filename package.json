@@ -1,11 +1,14 @@
 {
   "name": "leaflet-bing-layer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Bing Maps Layer for Leaflet v1.0.0",
   "main": "leaflet-bing-layer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "leaflet-bing-layer.js"
+  ],
   "keywords": [
     "leaflet",
     "bing"
