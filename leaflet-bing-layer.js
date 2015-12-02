@@ -36,6 +36,16 @@
   }
 
   /**
+   * Converts Leaflet BBoxString to Bing BBox
+   * @param {String} bboxString 'southwest_lng,southwest_lat,northeast_lng,northeast_lat'
+   * @return {Array} [south_lat, west_lng, north_lat, east_lng]
+   */
+  function toBingBBox (bboxString) {
+    var bbox = bboxString.split(',')
+    return [bbox[1], bbox[0], bbox[3], bbox[2]]
+  }
+
+  /**
    * Create a new Bing Maps layer.
    * @param {string|object} options Either a [Bing Maps Key](https://msdn.microsoft.com/en-us/library/ff428642.aspx) or an options object
    * @param {string} options.BingMapsKey A valid Bing Maps Key (required)
@@ -153,7 +163,7 @@
       var map = this._map
       if (!map || !map.attributionControl) return
       var zoom = map.getZoom()
-      var bbox = map.getBounds().toBBoxString().split(',')
+      var bbox = toBingBBox(map.getBounds().toBBoxString())
       this._fetch.then(function () {
         var attributions = this._getAttributions(bbox, zoom)
         var prevAttributions = this._attributions
