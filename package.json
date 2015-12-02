@@ -1,0 +1,23 @@
+{
+  "name": "leaflet-bing-layer",
+  "version": "1.0.0",
+  "description": "Bing Maps Layer for Leaflet v1.0.0",
+  "main": "leaflet-bing-layer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "leaflet",
+    "bing"
+  ],
+  "author": "Gregor MacLennan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gmaclennan/leaflet-bing-layer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gmaclennan/leaflet-bing-layer/issues"
+  },
+  "homepage": "https://github.com/gmaclennan/leaflet-bing-layer"
+}
