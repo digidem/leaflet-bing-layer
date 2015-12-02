@@ -18,6 +18,13 @@
 }(function (L) {
   'use strict'
 
+  /**
+   * Converts tile xyz coordinates to Quadkey
+   * @param {Number} x
+   * @param {Number} y
+   * @param {Number} z
+   * @return {Number} Quadkey
+   */
   function toQuadKey (x, y, z) {
     var key = ''
     for (var i = 1; i <= z; i++) {
@@ -26,7 +33,12 @@
     return key
   }
 
-  function bboxIntersect (bbox1, bbox2){
+  /**
+   * @param {Array} bbox1
+   * @param {Array} bbox2
+   * @return {Boolean} Returns true if bboxes intersect.
+   */
+  function bboxIntersect (bbox1, bbox2) {
     return !(
       bbox1[0] > bbox2[2] ||
       bbox1[2] < bbox2[0] ||
@@ -88,6 +100,7 @@
       this._imageryProviders = []
       this._attributions = []
 
+      // Keep a reference to the promise so we can use it later
       this._fetch = window.fetchJsonp(metaDataUrl, {jsonpCallback: 'jsonp'})
         .then(function (response) {
           return response.json()
@@ -140,11 +153,13 @@
       })
     },
 
+    // Update the attribution control every time the map is moved
     onAdd: function (map) {
       map.on('moveend', this._updateAttribution, this)
       L.TileLayer.prototype.onAdd.call(this, map)
     },
 
+    // Clean up events
     onRemove: function (map) {
       map.off('moveend', this._updateAttribution, this)
       L.TileLayer.prototype.onRemove.call(this, map)
@@ -154,33 +169,47 @@
       if (metaData.statusCode !== 200) {
         throw new Error('Bing Imagery Metadata error: \n' + JSON.stringify(metaData, null, '  '))
       }
-      this._url = metaData.resourceSets[0].resources[0].imageUrl
-      this._imageryProviders = metaData.resourceSets[0].resources[0].imageryProviders
-      this.options.subdomains = metaData.resourceSets[0].resources[0].imageUrlSubdomains
+      var resource = metaData.resourceSets[0].resources[0]
+      this._url = resource.imageUrl
+      this._imageryProviders = resource.imageryProviders
+      this.options.subdomains = resource.imageUrlSubdomains
       this._updateAttribution()
       return Promise.resolve()
     },
 
+    /**
+     * Update the attribution control of the map with the provider attributions
+     * within the current map bounds
+     */
     _updateAttribution: function () {
       var map = this._map
       if (!map || !map.attributionControl) return
       var zoom = map.getZoom()
       var bbox = toBingBBox(map.getBounds().toBBoxString())
       this._fetch.then(function () {
-        var attributions = this._getAttributions(bbox, zoom)
+        var newAttributions = this._getAttributions(bbox, zoom)
         var prevAttributions = this._attributions
-        attributions.forEach(function (attr) {
+        // Add any new provider attributions in the current area to the attribution control
+        newAttributions.forEach(function (attr) {
           if (prevAttributions.indexOf(attr) > -1) return
           map.attributionControl.addAttribution(attr)
         })
+        // Remove any attributions that are no longer in the current area from the attribution control
         prevAttributions.filter(function (attr) {
-          if (attributions.indexOf(attr) > -1) return
+          if (newAttributions.indexOf(attr) > -1) return
           map.attributionControl.removeAttribution(attr)
         })
-        this._attributions = attributions
+        this._attributions = newAttributions
       }.bind(this))
     },
 
+    /**
+     * Returns an array of attributions for given bbox and zoom
+     * @private
+     * @param {Array} bbox [west, south, east, north]
+     * @param {Number} zoom
+     * @return {Array} Array of attribution strings for each provider
+     */
     _getAttributions: function (bbox, zoom) {
       return this._imageryProviders.reduce(function (attributions, provider) {
         for (var i = 0; i < provider.coverageAreas.length; i++) {
@@ -191,10 +220,9 @@
             return attributions
           }
         }
-        return attribution
+        return attributions
       }, [])
     }
-
   })
 
   L.bingLayer = function (options) {
