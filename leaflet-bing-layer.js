@@ -231,7 +231,7 @@ var fetchJsonp=function(){"use strict";function e(){return"jsonp_"+Date.now()+"_
     }
   })
 
-  L.TileLayer.bing = function (options) {
+  L.tileLayer.bing = function (options) {
     return new L.TileLayer.Bing(options)
   }
 
