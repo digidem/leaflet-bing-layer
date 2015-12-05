@@ -53,7 +53,8 @@ L.TileLayer.Bing = L.TileLayer.extend({
   },
 
   statics: {
-    METADATA_URL: 'http://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={BingMapsKey}&include=ImageryProviders'
+    METADATA_URL: 'http://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={BingMapsKey}&include=ImageryProviders',
+    POINT_METADATA_URL: 'http://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}/{lat},{lng}?zl={z}&key={BingMapsKey}'
   },
 
   initialize: function (options) {
@@ -143,6 +144,34 @@ L.TileLayer.Bing = L.TileLayer.extend({
       map.attributionControl.removeAttribution(attribution)
     })
     L.TileLayer.prototype.onRemove.call(this, map)
+  },
+
+  /**
+   * Get the [Bing Imagery metadata](https://msdn.microsoft.com/en-us/library/ff701712.aspx)
+   * for a specific [`LatLng`](http://leafletjs.com/reference.html#latlng)
+   * and zoom level. If either `latlng` or `zoom` is omitted and the layer is attached
+   * to a map, the map center and current map zoom are used.
+   * @param {L.LatLng} latlng
+   * @param {Number} zoom
+   * @return {Promise} Resolves to the JSON metadata
+   */
+  getMetaData: function (latlng, zoom) {
+    if (!this._map && (!latlng || !zoom)) {
+      return Promise.reject(new Error('If layer is not attached to map, you must provide LatLng and zoom'))
+    }
+    latlng = latlng || this._map.getCenter()
+    zoom = zoom || this._map.getZoom()
+    var PointMetaDataUrl = L.Util.template(L.TileLayer.Bing.POINT_METADATA_URL, {
+      BingMapsKey: this.options.BingMapsKey,
+      imagerySet: this.options.imagerySet,
+      z: zoom,
+      lat: latlng.lat,
+      lng: latlng.lng
+    })
+    return fetchJsonp(PointMetaDataUrl, {jsonpCallback: 'jsonp'})
+      .then(function (response) {
+        return response.json()
+      })
   },
 
   _metaDataOnLoad: function (metaData) {

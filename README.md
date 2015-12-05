@@ -20,6 +20,11 @@ Create a new Bing Maps Layer. Depends on [Promises](https://developer.mozilla.or
 | `[options.imagerySet]` | string         | _optional:_ [Imagery Type](https://msdn.microsoft.com/en-us/library/ff701716.aspx) [_default=Aerial_]               |
 | `[options.culture]`   | string         | _optional:_ Language for labels, [see options](https://msdn.microsoft.com/en-us/library/hh441729.aspx) [_default=en_US_]           |
 
+### Methods
+
+| Method           | Returns        | Description   |
+| ----------       | -------------- | ------------- |
+| `getMetaData(<LatLng> latlng, <Number> zoom)`    | `Promise`      | Get the [Bing Imagery metadata](https://msdn.microsoft.com/en-us/library/ff701712.aspx) for a specific [`LatLng`](http://leafletjs.com/reference.html#latlng) and zoom level. `latLng` or `zoom` are optional *if* the layer is attached to a map, they default to current map center and zoom. Returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves to the metadata JSON from Bing |
 
 ### Example
 
