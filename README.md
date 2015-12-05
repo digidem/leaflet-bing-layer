@@ -30,7 +30,7 @@ Create a new Bing Maps Layer. Depends on [Promises](https://developer.mozilla.or
 
 ```js
 var map = L.map('map').setView([51.505, -0.09], 13)
-L.TileLayer.bing(MyBingMapsKey).addTo(map)
+L.tileLayer.bing(MyBingMapsKey).addTo(map)
 ```
 
 [Live Example](http://gmaclennan.github.io/leaflet-bing-layer/) see [index.html](index.html)
