@@ -10,11 +10,15 @@ var bboxIntersect = require('bbox-intersect')
  * @return {Number} Quadkey
  */
 function toQuadKey (x, y, z) {
-  var key = ''
-  for (var i = 1; i <= z; i++) {
-    key += (((y >> z - i) & 1) << 1) | ((x >> z - i) & 1)
+  var index = ''
+  for (var i = z; i > 0; i--) {
+    var b = 0
+    var mask = 1 << (i - 1)
+    if ((x & mask) !== 0) b++
+    if ((y & mask) !== 0) b += 2
+    index += b.toString()
   }
-  return key
+  return index
 }
 
 /**
