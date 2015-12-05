@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 - FIXED: **[BREAKING]** Export factory function on `L.tileLayer.bing` not `L.TileLayer.bing`
+- IMPROVED: Package with browserify and require dependencies
 
 ## v2.0.2 - 2015-12-03
 
