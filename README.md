@@ -17,7 +17,7 @@ Create a new Bing Maps Layer. Depends on [Promises](https://developer.mozilla.or
 | ----------------------------- | -------------- | ----------------------------------------------------------------------------------------------------- |
 | `options`                     | string\|object | A valid [Bing Maps Key](https://msdn.microsoft.com/en-us/library/ff428642.aspx) or an `options` object. `options` inherits from [L.TileLayer options](http://mourner.github.io/Leaflet/reference.html#tilelayer-options) (e.g. you can use `minZoom` and `opacity` and etc) |
 | `options.bingMapsKey`         | string         | A valid Bing Maps Key [_required_]                                                                      |
-| `[options.imagerySet]` | string         | _optional:_ [Imagery Type](https://msdn.microsoft.com/en-us/library/ff701716.aspx) [_default=Aerial_]               |
+| `[options.imagerySet]` | string         | _optional:_ [Imagery Type](https://msdn.microsoft.com/en-us/library/ff701716.aspx) [_default=Aerial_] <br>- `Aerial` - Aerial imagery<br>- `AerialWithLabels` - Aerial imagery with a road overlay<br>- `Road` - Roads without additional imagery<br>**[Not supported](https://social.msdn.microsoft.com/Forums/en-US/3d80d4a6-f4c9-4926-a336-e0d545b1ef3c/is-it-possible-to-retrieve-birdseye-map-tiles-using-rest-services?forum=bingmapsservices)**: `Birdseye` and `BirdseyeWithLabels`      |
 | `[options.culture]`   | string         | _optional:_ Language for labels, [see options](https://msdn.microsoft.com/en-us/library/hh441729.aspx) [_default=en_US_]           |
 
 ### Methods
