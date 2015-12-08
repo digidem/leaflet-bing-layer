@@ -46,29 +46,33 @@ function toBingBBox (bboxString) {
  */
 L.TileLayer.Bing = L.TileLayer.extend({
   options: {
-    BingMapsKey: null, // Required
+    bingMapsKey: null, // Required
     imagerySet: 'Aerial',
     culture: 'en-US',
     minZoom: 1
   },
 
   statics: {
-    METADATA_URL: 'http://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={BingMapsKey}&include=ImageryProviders',
+    METADATA_URL: 'http://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={bingMapsKey}&include=ImageryProviders',
     POINT_METADATA_URL: 'http://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}/{lat},{lng}?zl={z}&key={BingMapsKey}'
   },
 
   initialize: function (options) {
     if (typeof options === 'string') {
-      options = { BingMapsKey: options }
+      options = { bingMapsKey: options }
     }
-    if (!options.BingMapsKey) {
+    if (!options || !options.bingMapsKey) {
       throw new Error('Must supply options.BingMapsKey')
+    }
+    if (options.BingMapsKey) {
+      options.bingMapsKey = options.BingMapsKey
+      console.warn('use options.bingMapsKey instead of options.BingMapsKey')
     }
     options = L.setOptions(this, options)
     options.minZoom = Math.max(1, options.minZoom)
 
     var metaDataUrl = L.Util.template(L.TileLayer.Bing.METADATA_URL, {
-      BingMapsKey: this.options.BingMapsKey,
+      bingMapsKey: this.options.bingMapsKey,
       imagerySet: this.options.imagerySet
     })
 
