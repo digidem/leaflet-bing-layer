@@ -8,7 +8,7 @@ Bing Maps Layer for Leaflet v1.0.0
 Create a new Bing Maps Layer. Depends on [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which needs a polyfill for [older browsers](http://caniuse.com/#feat=promises) by adding this script to your html `<head>`:
 
 ```html
-<script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=Promise"></script>
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Promise"></script>
 ```
 
 ### Parameters
