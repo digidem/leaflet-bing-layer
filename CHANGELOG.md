@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v3.0.0] - 2015-12-08
+
 - FIXED: **[BREAKING]** Export factory function on `L.tileLayer.bing` not `L.TileLayer.bing`
 - CHANGED: BingMapsKey is now passed on `options.bingMapsKey` (`options.BingMapsKey` will still work, but for convention this should start with a lowercase character)
 - IMPROVED: Package with browserify and require dependencies
@@ -15,4 +17,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Initial release
 
-[Unreleased]: https://github.com/digidem/leaflet-bing-layer/compare/v2.0.2...HEAD
+[Unreleased]: https://github.com/digidem/leaflet-bing-layer/compare/v3.0.0...HEAD
+[v3.0.0]: https://github.com/digidem/leaflet-bing-layer/compare/v2.0.2...v3.0.0
