@@ -58,19 +58,19 @@ L.TileLayer.Bing = L.TileLayer.extend({
 
   statics: {
     METADATA_URL: 'http://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={bingMapsKey}&include=ImageryProviders',
-    POINT_METADATA_URL: 'http://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}/{lat},{lng}?zl={z}&key={BingMapsKey}'
+    POINT_METADATA_URL: 'http://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}/{lat},{lng}?zl={z}&key={bingMapsKey}'
   },
 
   initialize: function (options) {
     if (typeof options === 'string') {
       options = { bingMapsKey: options }
     }
-    if (!options || !options.bingMapsKey) {
-      throw new Error('Must supply options.BingMapsKey')
-    }
-    if (options.BingMapsKey) {
+    if (options && options.BingMapsKey) {
       options.bingMapsKey = options.BingMapsKey
       console.warn('use options.bingMapsKey instead of options.BingMapsKey')
+    }
+    if (!options || !options.bingMapsKey) {
+      throw new Error('Must supply options.BingMapsKey')
     }
     options = L.setOptions(this, options)
     if (VALID_IMAGERY_SETS.indexOf(options.imagerySet) < 0) {
@@ -93,6 +93,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
         return response.json()
       })
       .then(this._metaDataOnLoad.bind(this))
+      .catch(console.error.bind(console))
 
     // for https://github.com/Leaflet/Leaflet/issues/137
     if (!L.Browser.android) {
@@ -174,7 +175,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
     latlng = latlng || this._map.getCenter()
     zoom = zoom || this._map.getZoom()
     var PointMetaDataUrl = L.Util.template(L.TileLayer.Bing.POINT_METADATA_URL, {
-      BingMapsKey: this.options.BingMapsKey,
+      bingMapsKey: this.options.bingMapsKey,
       imagerySet: this.options.imagerySet,
       z: zoom,
       lat: latlng.lat,
@@ -184,6 +185,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
       .then(function (response) {
         return response.json()
       })
+      .catch(console.error.bind(console))
   },
 
   _metaDataOnLoad: function (metaData) {
