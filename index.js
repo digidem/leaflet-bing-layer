@@ -91,6 +91,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
         return response.json()
       })
       .then(this._metaDataOnLoad.bind(this))
+      .catch(console.error.bind(console))
 
     // for https://github.com/Leaflet/Leaflet/issues/137
     if (!L.Browser.android) {
@@ -182,6 +183,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
       .then(function (response) {
         return response.json()
       })
+      .catch(console.error.bind(console))
   },
 
   _metaDataOnLoad: function (metaData) {
