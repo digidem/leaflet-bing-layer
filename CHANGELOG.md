@@ -3,7 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [v3.0.1] - 2015-12-13
+
+- FIXED: options.BingMapsKey backwards compatability
+- FIXED: options.bingMapsKey was not working for getMetaData
+- FIXED: catch errors (and log to console) for jsonp
 
 ## [v3.0.0] - 2015-12-08
 
@@ -18,4 +22,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 Initial release
 
 [Unreleased]: https://github.com/digidem/leaflet-bing-layer/compare/v3.0.0...HEAD
+[v3.0.1]: https://github.com/digidem/leaflet-bing-layer/compare/v3.0.0...v3.0.1
 [v3.0.0]: https://github.com/digidem/leaflet-bing-layer/compare/v2.0.2...v3.0.0
