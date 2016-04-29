@@ -57,8 +57,8 @@ L.TileLayer.Bing = L.TileLayer.extend({
   },
 
   statics: {
-    METADATA_URL: '//dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={bingMapsKey}&include=ImageryProviders',
-    POINT_METADATA_URL: '//dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}/{lat},{lng}?zl={z}&key={bingMapsKey}'
+    METADATA_URL: 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={bingMapsKey}&include=ImageryProviders',
+    POINT_METADATA_URL: 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}/{lat},{lng}?zl={z}&key={bingMapsKey}'
   },
 
   initialize: function (options) {
@@ -368,7 +368,7 @@ module.exports = function(bbox1, bbox2){
       throw new Error('polyfill failed because global object is unavailable in this environment');
     }
   }
-
+  
   local.fetchJsonp = fetchJsonp;
   */
 
