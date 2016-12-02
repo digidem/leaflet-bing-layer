@@ -133,7 +133,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
   },
 
   getTileUrl: function (coords) {
-    var quadkey = toQuadKey(coords.x, coords.y, coords.z)
+    var quadkey = toQuadKey(coords.x, coords.y, this._getZoomForUrl());
     return L.Util.template(this._url, {
       quadkey: quadkey,
       subdomain: this._getSubdomain(coords),
