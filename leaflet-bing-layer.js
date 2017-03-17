@@ -133,6 +133,9 @@ L.TileLayer.Bing = L.TileLayer.extend({
   },
 
   getTileUrl: function (coords) {
+    if (coords.z > this.options.maxNativeZoom) {
+      coords.z = this.options.maxNativeZoom;
+    }
     var quadkey = toQuadKey(coords.x, coords.y, coords.z)
     return L.Util.template(this._url, {
       quadkey: quadkey,
@@ -294,7 +297,8 @@ module.exports = function(bbox1, bbox2){
     return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
   }
 
-  // Known issue: Will throw 'Uncaught ReferenceError: callback_*** is not defined' error if request timeout
+  // Known issue: Will throw 'Uncaught ReferenceError: callback_*** is not defined'
+  // error if request timeout
   function clearFunction(functionName) {
     // IE8 throws an exception when you try to delete a property on window
     // http://stackoverflow.com/a/1824228/751089
@@ -310,16 +314,19 @@ module.exports = function(bbox1, bbox2){
     document.getElementsByTagName('head')[0].removeChild(script);
   }
 
-  var fetchJsonp = function fetchJsonp(url) {
-    var options = arguments[1] === undefined ? {} : arguments[1];
+  function fetchJsonp(_url) {
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-    var timeout = options.timeout != null ? options.timeout : defaultOptions.timeout;
-    var jsonpCallback = options.jsonpCallback != null ? options.jsonpCallback : defaultOptions.jsonpCallback;
+    // to avoid param reassign
+    var url = _url;
+    var timeout = options.timeout || defaultOptions.timeout;
+    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
 
     var timeoutId = undefined;
 
     return new Promise(function (resolve, reject) {
       var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
+      var scriptId = jsonpCallback + '_' + callbackFunction;
 
       window[callbackFunction] = function (response) {
         resolve({
@@ -332,7 +339,7 @@ module.exports = function(bbox1, bbox2){
 
         if (timeoutId) clearTimeout(timeoutId);
 
-        removeScript(jsonpCallback + '_' + callbackFunction);
+        removeScript(scriptId);
 
         clearFunction(callbackFunction);
       };
@@ -341,18 +348,18 @@ module.exports = function(bbox1, bbox2){
       url += url.indexOf('?') === -1 ? '?' : '&';
 
       var jsonpScript = document.createElement('script');
-      jsonpScript.setAttribute('src', url + jsonpCallback + '=' + callbackFunction);
-      jsonpScript.id = jsonpCallback + '_' + callbackFunction;
+      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
+      jsonpScript.id = scriptId;
       document.getElementsByTagName('head')[0].appendChild(jsonpScript);
 
       timeoutId = setTimeout(function () {
-        reject(new Error('JSONP request to ' + url + ' timed out'));
+        reject(new Error('JSONP request to ' + _url + ' timed out'));
 
         clearFunction(callbackFunction);
-        removeScript(jsonpCallback + '_' + callbackFunction);
+        removeScript(scriptId);
       }, timeout);
     });
-  };
+  }
 
   // export as global function
   /*
@@ -368,7 +375,6 @@ module.exports = function(bbox1, bbox2){
       throw new Error('polyfill failed because global object is unavailable in this environment');
     }
   }
-  
   local.fetchJsonp = fetchJsonp;
   */
 

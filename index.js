@@ -131,6 +131,9 @@ L.TileLayer.Bing = L.TileLayer.extend({
   },
 
   getTileUrl: function (coords) {
+    if (coords.z > this.options.maxNativeZoom) {
+      coords.z = this.options.maxNativeZoom;
+    }
     var quadkey = toQuadKey(coords.x, coords.y, coords.z)
     return L.Util.template(this._url, {
       quadkey: quadkey,
