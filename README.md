@@ -33,7 +33,7 @@ var map = L.map('map').setView([51.505, -0.09], 13)
 L.tileLayer.bing(MyBingMapsKey).addTo(map)
 ```
 
-[Live Example](http://gmaclennan.github.io/leaflet-bing-layer/) see [index.html](index.html)
+[Live Example](http://digidem.github.io/leaflet-bing-layer/) see [index.html](index.html)
 
 ### License
 
