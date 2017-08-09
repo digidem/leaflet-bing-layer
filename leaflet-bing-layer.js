@@ -33,7 +33,16 @@ function toBingBBox (bboxString) {
   return [bbox[1], bbox[0], bbox[3], bbox[2]]
 }
 
-var VALID_IMAGERY_SETS = ['Aerial', 'AerialWithLabels', 'Road']
+var VALID_IMAGERY_SETS = [
+  'Aerial',
+  'AerialWithLabels',
+  'Road',
+  'RoadOnDemand',
+  'CanvasLight',
+  'CanvasDark',
+  'CanvasGray',
+  'OrdnanceSurvey'
+]
 
 /**
  * Create a new Bing Maps layer.
@@ -74,7 +83,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
     }
     options = L.setOptions(this, options)
     if (VALID_IMAGERY_SETS.indexOf(options.imagerySet) < 0) {
-      throw new Error("'" + options.imagerySet + "' is an invalid imagerySet, see https://github.com/gmaclennan/leaflet-bing-layer#parameters")
+      throw new Error("'" + options.imagerySet + "' is an invalid imagerySet, see https://github.com/digidem/leaflet-bing-layer#parameters")
     }
     // Bing maps do not have zoom=0 tiles.
     options.minZoom = Math.max(1, options.minZoom)
