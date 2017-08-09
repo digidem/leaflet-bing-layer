@@ -81,7 +81,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
     }
     options = L.setOptions(this, options)
     if (VALID_IMAGERY_SETS.indexOf(options.imagerySet) < 0) {
-      throw new Error("'" + options.imagerySet + "' is an invalid imagerySet, see https://github.com/gmaclennan/leaflet-bing-layer#parameters")
+      throw new Error("'" + options.imagerySet + "' is an invalid imagerySet, see https://github.com/digidem/leaflet-bing-layer#parameters")
     }
     // Bing maps do not have zoom=0 tiles.
     options.minZoom = Math.max(1, options.minZoom)
