@@ -31,7 +31,16 @@ function toBingBBox (bboxString) {
   return [bbox[1], bbox[0], bbox[3], bbox[2]]
 }
 
-var VALID_IMAGERY_SETS = ['Aerial', 'AerialWithLabels', 'Road']
+var VALID_IMAGERY_SETS = [
+  'Aerial',
+  'AerialWithLabels',
+  'Road',
+  'RoadOnDemand',
+  'CanvasLight',
+  'CanvasDark',
+  'CanvasGray',
+  'OrdnanceSurvey'
+]
 
 /**
  * Create a new Bing Maps layer.
