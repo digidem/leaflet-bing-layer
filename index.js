@@ -60,7 +60,8 @@ L.TileLayer.Bing = L.TileLayer.extend({
     bingMapsKey: null, // Required
     imagerySet: 'Aerial',
     culture: 'en-US',
-    minZoom: 1
+	minNativeZoom: 1,
+	maxNativeZoom: 19
   },
 
   statics: {
@@ -83,8 +84,6 @@ L.TileLayer.Bing = L.TileLayer.extend({
     if (VALID_IMAGERY_SETS.indexOf(options.imagerySet) < 0) {
       throw new Error("'" + options.imagerySet + "' is an invalid imagerySet, see https://github.com/digidem/leaflet-bing-layer#parameters")
     }
-    // Bing maps do not have zoom=0 tiles.
-    options.minZoom = Math.max(1, options.minZoom)
 
     var metaDataUrl = L.Util.template(L.TileLayer.Bing.METADATA_URL, {
       bingMapsKey: this.options.bingMapsKey,
