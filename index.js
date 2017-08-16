@@ -60,6 +60,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
     bingMapsKey: null, // Required
     imagerySet: 'Aerial',
     culture: 'en-US',
+    minZoom: 1,
     minNativeZoom: 1,
     maxNativeZoom: 19
   },
