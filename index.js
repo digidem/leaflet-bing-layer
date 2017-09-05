@@ -201,7 +201,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
     }
     var resource = metaData.resourceSets[0].resources[0]
     this._url = resource.imageUrl
-    this._imageryProviders = resource.imageryProviders
+    this._imageryProviders = resource.imageryProviders || []
     this.options.subdomains = resource.imageUrlSubdomains
     this._updateAttribution()
     return Promise.resolve()
