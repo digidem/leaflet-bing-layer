@@ -66,8 +66,8 @@ L.TileLayer.Bing = L.TileLayer.extend({
   },
 
   statics: {
-    METADATA_URL: 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={bingMapsKey}&include=ImageryProviders&uriScheme=https',
-    POINT_METADATA_URL: 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}/{lat},{lng}?zl={z}&key={bingMapsKey}&uriScheme=https'
+    METADATA_URL: 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={bingMapsKey}&include=ImageryProviders&uriScheme=https&c={culture}',
+    POINT_METADATA_URL: 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}/{lat},{lng}?zl={z}&key={bingMapsKey}&uriScheme=https&c={culture}'
   },
 
   initialize: function (options) {
@@ -88,7 +88,8 @@ L.TileLayer.Bing = L.TileLayer.extend({
 
     var metaDataUrl = L.Util.template(L.TileLayer.Bing.METADATA_URL, {
       bingMapsKey: this.options.bingMapsKey,
-      imagerySet: this.options.imagerySet
+      imagerySet: this.options.imagerySet,
+      culture: this.options.culture
     })
 
     this._imageryProviders = []
