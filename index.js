@@ -1,5 +1,5 @@
 var L = require('leaflet')
-var fetchJsonp = require('fetch-jsonp')
+var fetchJsonp = require('fetch-jsonp/src/fetch-jsonp').default
 var bboxIntersect = require('bbox-intersect')
 
 /**
