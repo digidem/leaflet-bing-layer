@@ -95,7 +95,10 @@ L.TileLayer.Bing = L.TileLayer.extend({
     this._attributions = []
 
     // Keep a reference to the promise so we can use it later
-    this._fetch = fetchJsonp(metaDataUrl, {jsonpCallback: 'jsonp'})
+    this._fetch = fetchJsonp(metaDataUrl, {
+        jsonpCallback: 'jsonp',
+        timeout: this.options.timeout,
+      })
       .then(function (response) {
         return response.json()
       })
@@ -188,7 +191,10 @@ L.TileLayer.Bing = L.TileLayer.extend({
       lat: latlng.lat,
       lng: latlng.lng
     })
-    return fetchJsonp(PointMetaDataUrl, {jsonpCallback: 'jsonp'})
+    return fetchJsonp(PointMetaDataUrl, {
+        jsonpCallback: 'jsonp',
+        timeout: this.options.timeout,
+      })
       .then(function (response) {
         return response.json()
       })
