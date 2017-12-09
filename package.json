@@ -12,7 +12,7 @@
     "leaflet": "global:L"
   },
   "scripts": {
-    "build": "browserify index.js > leaflet-bing-layer.js",
+    "build": "browserify -g babelify index.js > leaflet-bing-layer.js",
     "postbuild": "uglifyjs leaflet-bing-layer.js -cm -o leaflet-bing-layer.min.js",
     "preversion": "npm test && npm run build",
     "lint": "standard index.js",
@@ -36,10 +36,13 @@
   "dependencies": {
     "bbox-intersect": "^0.1.1",
     "browserify-shim": "^3.8.11",
-    "fetch-jsonp": "^1.0.0",
+    "fetch-jsonp": "camsong/fetch-jsonp",
     "leaflet": "^1.0.0-beta.2"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
     "browserify": "^12.0.1",
     "budo": "^7.0.2",
     "standard": "^5.4.1"
