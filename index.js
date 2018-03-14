@@ -34,6 +34,7 @@ function toBingBBox (bboxString) {
 var VALID_IMAGERY_SETS = [
   'Aerial',
   'AerialWithLabels',
+  'AerialWithLabelsOnDemand',
   'Road',
   'RoadOnDemand',
   'CanvasLight',
