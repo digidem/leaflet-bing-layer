@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- ADDED: `options.style` to use [custom map styles](https://msdn.microsoft.com/en-us/library/mt823632.aspx)
 - ADDED: `AerialWithLabelsOnDemand` imagery set
 - ADDED: `minNativeZoom` and `maxNativeZoom` options
 - FIXED: imageryProviders error [#25](https://github.com/digidem/leaflet-bing-layer/pull/25)

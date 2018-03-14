@@ -43,6 +43,11 @@ var VALID_IMAGERY_SETS = [
   'OrdnanceSurvey'
 ]
 
+var DYNAMIC_IMAGERY_SETS = [
+  'AerialWithLabelsOnDemand',
+  'RoadOnDemand'
+]
+
 /**
  * Create a new Bing Maps layer.
  * @param {string|object} options Either a [Bing Maps Key](https://msdn.microsoft.com/en-us/library/ff428642.aspx) or an options object
@@ -85,6 +90,9 @@ L.TileLayer.Bing = L.TileLayer.extend({
     options = L.setOptions(this, options)
     if (VALID_IMAGERY_SETS.indexOf(options.imagerySet) < 0) {
       throw new Error("'" + options.imagerySet + "' is an invalid imagerySet, see https://github.com/digidem/leaflet-bing-layer#parameters")
+    }
+    if (options && options.style && DYNAMIC_IMAGERY_SETS.indexOf(options.imagerySet) < 0) {
+      console.warn('Dynamic styles will only work with these imagerySet choices: ' + DYNAMIC_IMAGERY_SETS.join(', '))
     }
 
     var metaDataUrl = L.Util.template(L.TileLayer.Bing.METADATA_URL, {
@@ -142,11 +150,15 @@ L.TileLayer.Bing = L.TileLayer.extend({
 
   getTileUrl: function (coords) {
     var quadkey = toQuadKey(coords.x, coords.y, coords.z)
-    return L.Util.template(this._url, {
+    var url = L.Util.template(this._url, {
       quadkey: quadkey,
       subdomain: this._getSubdomain(coords),
       culture: this.options.culture
     })
+    if (typeof this.options.style === 'string') {
+      url += '&st=' + this.options.style
+    }
+    return url
   },
 
   // Update the attribution control every time the map is moved
