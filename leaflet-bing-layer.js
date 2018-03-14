@@ -36,12 +36,18 @@ function toBingBBox (bboxString) {
 var VALID_IMAGERY_SETS = [
   'Aerial',
   'AerialWithLabels',
+  'AerialWithLabelsOnDemand',
   'Road',
   'RoadOnDemand',
   'CanvasLight',
   'CanvasDark',
   'CanvasGray',
   'OrdnanceSurvey'
+]
+
+var DYNAMIC_IMAGERY_SETS = [
+  'AerialWithLabelsOnDemand',
+  'RoadOnDemand'
 ]
 
 /**
@@ -62,7 +68,9 @@ L.TileLayer.Bing = L.TileLayer.extend({
     bingMapsKey: null, // Required
     imagerySet: 'Aerial',
     culture: 'en-US',
-    minZoom: 1
+    minZoom: 1,
+    minNativeZoom: 1,
+    maxNativeZoom: 19
   },
 
   statics: {
@@ -85,8 +93,9 @@ L.TileLayer.Bing = L.TileLayer.extend({
     if (VALID_IMAGERY_SETS.indexOf(options.imagerySet) < 0) {
       throw new Error("'" + options.imagerySet + "' is an invalid imagerySet, see https://github.com/digidem/leaflet-bing-layer#parameters")
     }
-    // Bing maps do not have zoom=0 tiles.
-    options.minZoom = Math.max(1, options.minZoom)
+    if (options && options.style && DYNAMIC_IMAGERY_SETS.indexOf(options.imagerySet) < 0) {
+      console.warn('Dynamic styles will only work with these imagerySet choices: ' + DYNAMIC_IMAGERY_SETS.join(', '))
+    }
 
     var metaDataUrl = L.Util.template(L.TileLayer.Bing.METADATA_URL, {
       bingMapsKey: this.options.bingMapsKey,
@@ -143,11 +152,15 @@ L.TileLayer.Bing = L.TileLayer.extend({
 
   getTileUrl: function (coords) {
     var quadkey = toQuadKey(coords.x, coords.y, coords.z)
-    return L.Util.template(this._url, {
+    var url = L.Util.template(this._url, {
       quadkey: quadkey,
       subdomain: this._getSubdomain(coords),
       culture: this.options.culture
     })
+    if (typeof this.options.style === 'string') {
+      url += '&st=' + this.options.style
+    }
+    return url
   },
 
   // Update the attribution control every time the map is moved
@@ -203,7 +216,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
     }
     var resource = metaData.resourceSets[0].resources[0]
     this._url = resource.imageUrl
-    this._imageryProviders = resource.imageryProviders
+    this._imageryProviders = resource.imageryProviders || []
     this.options.subdomains = resource.imageUrlSubdomains
     this._updateAttribution()
     return Promise.resolve()

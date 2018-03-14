@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [3.3.0] - 2018-03-14
 
 - ADDED: `options.style` to use [custom map styles](https://msdn.microsoft.com/en-us/library/mt823632.aspx)
 - ADDED: `AerialWithLabelsOnDemand` imagery set
