@@ -147,9 +147,6 @@ L.TileLayer.Bing = L.TileLayer.extend({
   onAdd: function onAdd(map) {
     map.on('moveend', this._updateAttribution, this);
     L.TileLayer.prototype.onAdd.call(this, map);
-    this._attributions.forEach(function (attribution) {
-      map.attributionControl.addAttribution(attribution);
-    });
 
     this._updateAttribution();
   },
