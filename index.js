@@ -158,6 +158,8 @@ L.TileLayer.Bing = L.TileLayer.extend({
     this._attributions.forEach(function (attribution) {
       map.attributionControl.addAttribution(attribution)
     })
+
+    this._updateAttribution()
   },
 
   // Clean up events and remove attributions from attribution control
