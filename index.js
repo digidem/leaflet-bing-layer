@@ -219,7 +219,11 @@ L.TileLayer.Bing = L.TileLayer.extend({
   _updateAttribution: function () {
     var map = this._map
     if (!map || !map.attributionControl) return
-    var zoom = map.getZoom()
+
+    // map zoom can be out of bounds of native zoom levels, use the
+    // zoom level of the request tile instead
+    var zoom = this._tileZoom
+
     var bbox = toBingBBox(map.getBounds().toBBoxString())
     this._fetch.then(function () {
       var newAttributions = this._getAttributions(bbox, zoom)
