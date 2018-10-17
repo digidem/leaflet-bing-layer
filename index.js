@@ -177,6 +177,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
     this._attributions.forEach(function (attribution) {
       map.attributionControl.removeAttribution(attribution)
     })
+    this._attributions = []
     L.TileLayer.prototype.onRemove.call(this, map)
   },
 
