@@ -177,6 +177,7 @@ L.TileLayer.Bing = L.TileLayer.extend({
     this._attributions.forEach(function (attribution) {
       map.attributionControl.removeAttribution(attribution)
     })
+    this._attributions = []
     L.TileLayer.prototype.onRemove.call(this, map)
   },
 
@@ -231,6 +232,9 @@ L.TileLayer.Bing = L.TileLayer.extend({
     var zoom = map.getZoom()
     var bbox = toBingBBox(map.getBounds().toBBoxString())
     this._fetch.then(function () {
+      // Layer has been removed during fetch
+      if (!this._map) return
+
       var newAttributions = this._getAttributions(bbox, zoom)
       var prevAttributions = this._attributions
       // Add any new provider attributions in the current area to the attribution control
